@@ -103,6 +103,19 @@ type Query {
       table: "subreddit"
       configuration: "postgresql_config"
     )
+
+    " Queries for type 'Subreddit' "
+  getSubredditListByTopic(topic: String): [Subreddit]  
+  # Custom Query by Us
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """ 
+      SELECT * FROM "subreddit" WHERE "topic" = $1
+      """ # we changed from table property to query
+      configuration: "postgresql_config"
+    )
+
   getSubredditPaginatedList(first: Int, after: Int): [Subreddit]
     @dbquery(
       type: "postgresql"

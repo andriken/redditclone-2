@@ -14,7 +14,7 @@ export const Home: NextPage = () => { // we are saying our Home component Is of 
 
       <div>
           {/* Feed */}
-      </div>
+      </div>  
 
     </div>
   )

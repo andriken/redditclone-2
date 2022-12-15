@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import Avatar from './Avatar';
 import { PhotographIcon, LinkIcon } from '@heroicons/react/outline';
 import { useForm } from "react-hook-form";
+import { useMutation } from '@apollo/client';
+import { ADD_POST } from '../graphql/mutation';
+
 
 type FormData = {
     postTitle: string
@@ -13,6 +16,9 @@ type FormData = {
 
 const PostBox = () => {
     const { data: session } = useSession(); 
+
+    const [] = useMutation(ADD_POST);
+
     const [ imageBoxOpen, setImageBoxOpen ] = useState<boolean>(false); // with typeScript making sure the type It returns Is boolean.
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
