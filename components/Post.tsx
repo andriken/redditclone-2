@@ -107,11 +107,11 @@ const Post = ({ post }: Props ) => {
             <div className='flex flex-col items-center justify-start space-y-1
                 rounded-l-md bg-gray-50 p-4 text-gray-400'>
                 <ArrowUpIcon onClick={() => upVote(true)} className={`hover:text-red-400 ${vote && 'text-red-400'}`} />
-                <p className='text-xs font-bold text-black'>{displayVotes(data)}</p>
+                <p className='text-sm font-bold text-black'>{displayVotes(data)}</p>
                 <ArrowDownIcon onClick={() => upVote(false)} className={`hover:text-red-400 ${vote === false && 'text-blue-400'}`} />
             </div>
 
-            <div className='p-3 pb-1'>
+            <div className='p-3 pb-1 relative'>
                 {/* Header */}
                 <div className='flex items-center space-x-2'>
                     <Avatar seed={post.subreddit[0]?.topic} />
@@ -131,7 +131,7 @@ const Post = ({ post }: Props ) => {
                 </div>
 
                 {/* Image */}
-                <Image fill={true} className='w-full' src={post?.image} alt="" />
+                <Image fill={true} className="relative h-auto" src={post?.image || ""} alt="" />
 
 
                 {/* Footer */}

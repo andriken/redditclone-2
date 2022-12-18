@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.2",
-    "@heroicons/react": "^2.0.13",
+    "@heroicons/react": "^1.0.6",
     "@tailwindcss/line-clamp": "^0.2.0",
     "@uiball/loaders": "^1.2.6",
     "autoprefixer": "^10.2.5",

@@ -5,7 +5,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['avatars.dicebear.com', 'upload.wikimedia.org'],
+    domains: ['cdn.pixabay.com','avatars.dicebear.com','upload.wikimedia.org'],
   },
   swcMinify: true,
 }
