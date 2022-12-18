@@ -44,7 +44,7 @@ const Post = ({ post }: Props ) => {
 
         setVote(vote);
 
-    }, [data]);
+    }, [data, session]);
 
     const upVote = async (isUpvote: boolean) => {
         if (!session) {
