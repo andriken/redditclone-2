@@ -63,7 +63,7 @@ const Header = () => {
           <div onClick={() => signOut()} className="hidden items-center lg:flex space-x-2 border
           border-gray-100 p-2 cursor-pointer">
           <div className="relative h-5 w-5 flex-shrink-0">
-            <img src="/images/reddit-auth-logo.png" alt="" />
+            <Image fill={true} src="/images/reddit-auth-logo.png" alt="" />
           </div>
 
           <div className="flex-1 text-xs">
@@ -78,7 +78,7 @@ const Header = () => {
         ( <div onClick={() => signIn()} className="hidden items-center lg:flex space-x-2 border
           border-gray-100 p-2 cursor-pointer">
             <div className="relative h-5 w-5 flex-shrink-0">
-              <img src="/images/reddit-auth-logo.png" alt="" />
+              <Image fill={true} src="/images/reddit-auth-logo.png" alt="" />
             </div>
 
             <p className="text-gray-400">Sign In</p>

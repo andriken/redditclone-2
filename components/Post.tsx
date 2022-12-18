@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_ALL_VOTES_BY_POST_ID } from '../graphql/queries'
 import { ADD_VOTE } from '../graphql/mutation'
+import Image from 'next/image'
 
 
 type Props = {
@@ -130,7 +131,7 @@ const Post = ({ post }: Props ) => {
                 </div>
 
                 {/* Image */}
-                <img className='w-full' src={post.image} alt="" />
+                <Image fill={true} className='w-full' src={post?.image} alt="" />
 
 
                 {/* Footer */}

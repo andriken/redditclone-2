@@ -12,7 +12,7 @@ const Avatar = ({seed, large}: Props) => { // props is of type Props
 
   return (
     <div className={`relative h-10 w-10 overflow-hidden rounded-full border-gray-300 bg-white ${large && 'h-20 w-20'}`}>
-        <img src={`https://avatars.dicebear.com/api/open-peeps/:${seed || session?.user?.name || 'placeholder'}.svg`}
+        <Image fill={true} src={`https://avatars.dicebear.com/api/open-peeps/:${seed || session?.user?.name || 'placeholder'}.svg`}
             alt="" />   
     </div>
   )
