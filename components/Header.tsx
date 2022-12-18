@@ -10,6 +10,7 @@ import {
   VideoCameraIcon, 
   MenuIcon} from "@heroicons/react/outline"
 
+
 import { HomeIcon, ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
 import { signIn, signOut, useSession } from 'next-auth/react';
 
