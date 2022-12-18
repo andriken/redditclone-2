@@ -3,8 +3,12 @@ import React, { useState } from 'react'
 import Avatar from './Avatar';
 import { PhotographIcon, LinkIcon } from '@heroicons/react/outline';
 import { useForm } from "react-hook-form";
-import { useMutation } from '@apollo/client';
-import { ADD_POST } from '../graphql/mutation';
+import { useMutation, useQuery } from '@apollo/client';
+import { ADD_POST, ADD_SUBREDDIT } from '../graphql/mutation';
+import client from '../apollo-client'; // client to query Graphql
+import { GET_SUBREDDIT_BY_TOPIC, GET_ALL_POSTS } from '../graphql/queries'; // custom grphql query 
+import toast from 'react-hot-toast';
+
 
 
 type FormData = {
@@ -14,23 +18,109 @@ type FormData = {
     subreddit: string
 }
 
-const PostBox = () => {
+
+type Props = {
+    subreddit?: string 
+}
+
+
+const PostBox = ({ subreddit }: Props) => {
     const { data: session } = useSession(); 
 
-    const [] = useMutation(ADD_POST);
+    const [addPost] = useMutation(ADD_POST, {
+        refetchQueries : [GET_ALL_POSTS, 'getPostList']
+    });
+    const [addSubreddit] = useMutation(ADD_SUBREDDIT);
 
     const [ imageBoxOpen, setImageBoxOpen ] = useState<boolean>(false); // with typeScript making sure the type It returns Is boolean.
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
 
-    const onSubmit = handleSubmit(async (formData) => (
+    const onSubmit = handleSubmit(async (formData) => {
+        const notification = toast.loading('Creating New Post...')
         console.log(formData)
-    ));
+
+        try {
+            console.log("starting...");
+
+
+            const { data : { getSubredditListByTopic: subreddit_list }  } = await client.query({
+                query: GET_SUBREDDIT_BY_TOPIC,
+                variables: {
+                    topic: subreddit || formData.subreddit // we check here If this data subreddit from form exists In database.
+                }
+
+            });
+            
+            console.log(subreddit_list, "getSubredditListByTopic");
+
+            
+            const subredditExists = subreddit_list.length > 0; // will be [] of found subreddit's
+
+            console.log(subredditExists, "SubredditExists")
+
+            if (!subredditExists) {
+                // create subreddit
+                const { data: { insertSubreddit: newSubreddit}} = await addSubreddit({
+                    variables: {
+                        topic: formData.subreddit
+                    }
+                })
+
+
+                console.log('Creating a Post...', formData);
+                const image = formData.postImage || ''
+
+                const { data: { insertPost: newPost } } = await addPost({
+                    variables: {
+                        body: formData.postBody,
+                        image: image,
+                        subreddit_id: newSubreddit.id,
+                        title: formData.postTitle,
+                        username: session?.user?.name
+                    }
+                })
+
+                console.log("new post added", newPost)
+
+            } else {
+                console.log('Using existing subreddit!');
+                console.log(subreddit_list);
+
+                const image = formData.postImage || ''
+
+                const { data: { insertPost: newPost} } = await addPost({
+                    variables: {
+                        body: formData.postBody,
+                        image: image,
+                        subreddit_id: subreddit_list[0].id,
+                        title: formData.postTitle,
+                        username: session?.user?.name
+                    }
+                })
+
+                console.log('New Post was added');
+            }
+
+            toast.success('New Post Created...', {
+                id: notification
+            })
+
+        } catch (error) {
+            console.log(error, "Error Detail")
+            toast.error("Whoops Something went wrong...");
+        }
+
+    });
+
+
+
+
   return (
     <form
         onSubmit={onSubmit}
         className='sticky top-16 z-50 p-2 border-gray-300 bg-white'>
-        <div className='flex space-x-3 items-center'>
+        <div onClick={() => { !session && toast("Sign In to post please!") }} className='flex space-x-3 items-center'>
             <Avatar />
 
             <input 
@@ -40,7 +130,7 @@ const PostBox = () => {
                 type="text"
                 className='flex-1 bg-gray-50 p-2 pl-5 outline-none' 
                 placeholder={
-                    session ? 'Create a Post by Entering a title' : 'Sign In to Post'
+                    session ? subreddit ? `Create a post in r/${subreddit}` : 'Create a Post by Entering a title' : 'Sign In to Post'
             } /> 
 
 
@@ -62,14 +152,17 @@ const PostBox = () => {
                     />
                 </div>
 
-                <div className='flex items-center px-2'>
-                    <p className='m-w-[90px]'>Subreddit</p>
-                    <input
-                        className='m-2 flex-1 bg-blue-50 p-2 outline-none'
-                        {...register('subreddit', { required: true})}
-                        type="text" placeholder='Text (optional)'
-                    />
-                </div>
+
+                {!subreddit && (
+                    <div className='flex items-center px-2'>
+                        <p className='m-w-[90px]'>Subreddit</p>
+                        <input
+                            className='m-2 flex-1 bg-blue-50 p-2 outline-none'
+                            {...register('subreddit', { required: true})}
+                            type="text" placeholder='Text (optional)'
+                        />
+                    </div>
+                )}
 
 
                 {imageBoxOpen && (

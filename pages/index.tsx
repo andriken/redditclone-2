@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { NextPage } from 'next'
 import PostBox from '../components/PostBox'
+import Feed from '../components/Feed'
 
 export const Home: NextPage = () => { // we are saying our Home component Is of type NextPage
   return (
@@ -14,6 +15,7 @@ export const Home: NextPage = () => { // we are saying our Home component Is of 
 
       <div>
           {/* Feed */}
+          <Feed />
       </div>  
 
     </div>
