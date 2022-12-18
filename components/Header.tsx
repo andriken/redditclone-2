@@ -8,8 +8,9 @@ import {
   SparklesIcon,
   SpeakerphoneIcon,
   VideoCameraIcon, 
-  MenuIcon} from "@heroicons/react/outline";
-import { BeakerIcon, HomeIcon, ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
+  MenuIcon} from "@heroicons/react/outline"
+
+import { HomeIcon, ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 import Link from 'next/link';
